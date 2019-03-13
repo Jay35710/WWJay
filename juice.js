@@ -184,7 +184,8 @@ $(document).ready(function() {
     // Add layers to the globe
     // Add layers ordered by drawing order: first to last
     globe.addLayer(new WorldWind.BMNGLayer(), {
-        category: "base"
+        category: "base",
+        enabled: false
     });
     globe.addLayer(new WorldWind.BMNGLandsatLayer(), {
         category: "base",
@@ -192,7 +193,7 @@ $(document).ready(function() {
     });
     globe.addLayer(new WorldWind.BingAerialLayer(), {
         category: "base",
-        enabled: false
+        enabled: true
     });
     globe.addLayer(new WorldWind.BingAerialWithLabelsLayer(), {
         category: "base",
@@ -206,10 +207,12 @@ $(document).ready(function() {
         opacity: 0.75
     });
     globe.addLayer(new WorldWind.CoordinatesDisplayLayer(globe.wwd), {
-        category: "setting"
+        category: "setting",
+        enabled: false
     });
     globe.addLayer(new WorldWind.ViewControlsLayer(globe.wwd), {
-        category: "setting"
+        category: "setting",
+        enabled: false
     });
     globe.addLayer(new WorldWind.CompassLayer(), {
         category: "setting",
@@ -217,12 +220,12 @@ $(document).ready(function() {
     });
     globe.addLayer(new WorldWind.StarFieldLayer(), {
         category: "setting",
-        enabled: false,
+        enabled: true,
         displayName: "Stars"
     });
     globe.addLayer(new WorldWind.AtmosphereLayer(), {
         category: "setting",
-        enabled: false,
+        enabled: true,
         time: null // or new Date()
     });
 
