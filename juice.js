@@ -8,6 +8,7 @@ $(document).ready(function() {
     if (BING_API_KEY) {
         // Initialize WorldWind properties before creating the first WorldWindow
         WorldWind.BingMapsKey = BING_API_KEY;
+        console.log("Laurance Peng Rouchen 阿嬤阿嬤");
     } else {
         //console.error("app.js: A Bing API key is required to use the Bing maps in production. Get your API key at https://www.bingmapsportal.com/");
         console.log("Ian Liu 以恆 阿嬤阿嬤")
@@ -220,7 +221,7 @@ $(document).ready(function() {
     });
     globe.addLayer(new WorldWind.StarFieldLayer(), {
         category: "setting",
-        enabled: true,
+        enabled: true ,
         displayName: "Stars"
     });
     globe.addLayer(new WorldWind.AtmosphereLayer(), {
@@ -228,6 +229,7 @@ $(document).ready(function() {
         enabled: true,
         time: null // or new Date()
     });
+
 
 
     // Create the view models
@@ -247,4 +249,19 @@ $(document).ready(function() {
     $('.collapse .close').on('click', function() {
         $(this).closest('.collapse').collapse('hide');
     });
+    ////////////////////////
+    //                    //challenge 6.1
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    ////////////////////////
+
 });

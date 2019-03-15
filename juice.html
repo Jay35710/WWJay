@@ -15,6 +15,16 @@
 
     <!-- Custom styles and overrides -->
     <link href="juice.css" rel="stylesheet">
+
+    <!--icon-->
+    <link rel="icon" href="https://cdn4.iconfinder.com/data/icons/generic-interaction/143/close-x-cross-multiply-delete-cancel-modal-error-no-512.png">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/worldwindjs@1.5.90/build/dist/worldwind.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="juice.js"></script>
+
 </head>
 
 <body>
@@ -22,9 +32,9 @@
 <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 
     <!--Branding icon and text-->
-    <a class="navbar-brand" href="https://worldwind.arc.nasa.gov/web target=_blank">
+    <a class="navbar-brand" href="http://localhost:63342/JayHuangWorldWind/examples/PlacemarksAndPicking.html?_ijt=4ibon4rphf4gb749a6ee7g31ac" >
         <img src="https://qph.fs.quoracdn.net/main-raw-457280285-ymcqgsdumwxocugzufohaiiqrwoypzxb.jpeg" width="30" height="30" class="d-inline-block align-top" alt="">
-        WorldWindJS
+        WorldWind JS
     </a>
 
     <!--Hamburger menu displayed on small screens/windows-->
@@ -46,7 +56,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#markers" role="button">
                     <span class="fas fa-map-marker-alt" aria-hidden="true"></span>
-                    <span class="d-md-none d-lg-inline" aria-hidden="true">Markers</span>
+                    <span class="d-md-none d-lg-inline" aria-hidden="true">Marders</span>
                 </a>
             </li>
             <!--Settings-->
@@ -55,6 +65,75 @@
                     <span class="fas fa-cog" aria-hidden="true"></span>
                     <span class="d-md-none d-lg-inline" aria-hidden="true">Settings</span>
                 </a>
+            </li>
+            <!--fat-->
+            <li class="nav-item">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" class="nav-link" data-parent="#accordion1" href="#collapseThree">challenge 6.4
+
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+
+                        <div class="panel-group" id="accordion2">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapseThreeOne">C
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThreeOne" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                            <a href="https://qph.fs.quoracdn.net/main-raw-457280285-ymcqgsdumwxocugzufohaiiqrwoypzxb.jpeg">char</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapseThreeTwo">F
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThreeTwo" class="panel-collapse collapse">
+                                    <div class="panel-body">
+
+                                           <a href="https://upload.wikimedia.org/wikipedia/commons/2/20/Common_lipids_lmaps.png">fat</a>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion2" href="#collapseThreeThree">L
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThreeThree" class="panel-collapse collapse">
+                                    <div class="panel-body">
+
+                                        <p >Layer∞∞ </p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="checkbox2" checked>
+                                            <span class="slider round" id="slider2"></span>
+                                        </label>
+                                        <p>Layer øøøøøøøøø </p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="checkbox3" checked>
+                                            <span class="slider round" id="slider3"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </li>
         </ul>
         <!--Search Box-->
@@ -163,12 +242,12 @@
 </main>
 
 <!-- JavaScript is placed at the end of the document so the page loads faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/worldwindjs@1.5.90/build/dist/worldwind.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
-<script src="juice.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+<!--<script src="https://unpkg.com/worldwindjs@1.5.90/build/dist/worldwind.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>-->
+<!--<script src="juice.js"></script>-->
 </body>
 
 </html>
