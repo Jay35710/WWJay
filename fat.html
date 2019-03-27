@@ -93,7 +93,10 @@
                             </button></h5>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">Marker list goes here.</p>
+                        <div class="list-group" data-bind="template: { name: 'layer-list-template', foreach: overlayLayers}"></div>
+                        <hr/>
+                        <div class="list-group" data-bind="template: { name: 'layer-list-template', foreach: baseLayers}"></div>
+
                     </div>
                 </div>
             </div>
@@ -123,11 +126,19 @@
                             </button></h5>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">Settings go here.</p>
+                        <div class="list-group" data-bind="template: { name: 'layer-list-template', foreach: settingLayers}"></div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!--Layer List Template-->
+        <script type="text/html" id="layer-list-template">
+            <button type="button" class="list-group-item list-group-item-action"
+                    data-bind="click: $root.toggleLayer, css: { active: $data.enabled }">
+                <span data-bind="text: $data.displayName"></span>
+            </button>
+        </script>
 
         <!--Search Preview Dialog-->
         <div id="preview" class="modal" tabindex="-1" role="dialog">
@@ -155,12 +166,20 @@
 </main>
 
 <!-- JavaScript is placed at the end of the document so the page loads faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://github.com/emxsys/worldwindjs/releases/download/v1.5.90/worldwind.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+<!--&lt;!&ndash;<script src="https://github.com/emxsys/worldwindjs/releases/download/v1.5.90/worldwind.min.js"></script>&ndash;&gt;-->
+<!--<script src="https://unpkg.com/worldwindjs@1.5.90/build/dist/worldwind.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>-->
+<link rel="icon" href="https://cdn4.iconfinder.com/data/icons/generic-interaction/143/close-x-cross-multiply-delete-cancel-modal-error-no-512.png">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+<script src="https://unpkg.com/worldwindjs@1.5.90/build/dist/worldwind.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
-
+<script src="https://github.com/emxsys/worldwindjs/releases/download/v1.5.90/worldwind.min.js"></script>
 <script src="fat.js"></script>
+<!--<script src="juice.js"></script>-->
 </body>
 </html>
