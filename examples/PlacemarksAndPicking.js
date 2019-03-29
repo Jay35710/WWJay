@@ -214,6 +214,7 @@ requirejs(['./WorldWindShim',
 //                    //
 //                    //
 ////////////////////////
+        //https://worldwind.arc.nasa.gov/web/get-started/#anchor
         //create layer
         var placemarkCLayer = new WorldWind.RenderableLayer("∞∞∞∞∞∞∞∞∞∞∞");
 
@@ -515,9 +516,9 @@ requirejs(['./WorldWindShim',
             // Web Map Service information from NASA's Near Earth Observations WMS
         //var serviceAddress = "./data/FatWMS.js";
         // var serviceAddress = "https://neo.sci.gsfc.nasa.gov/wms/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0";
-            var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
+        var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
             // Named layer displaying Average Temperature data
-            var layerName = "FatWMS:pointlands";
+        var layerName = "FatWMS:pointlands";
             // Called asynchronously to parse and create the WMS layer
             var createLayer = function (xmlDom) {
                 // Create a WmsCapabilities object from the XML DOM

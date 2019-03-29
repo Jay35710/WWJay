@@ -138,7 +138,7 @@ define(['../../src/WorldWind',
             this.wwd.addLayer(manholesLayer);
 
             var surfaceAttributes = new WorldWind.ShapeAttributes(null);
-            surfaceAttributes.interiorColor = WorldWind.Color.BLUE;;
+            surfaceAttributes.interiorColor = WorldWind.Color.BLUE;
             var surfaceShape = new WorldWind.SurfaceCircle(new WorldWind.Location(44.05, -123), 5e3, surfaceAttributes);
             var surfaceShapeLayer = new WorldWind.RenderableLayer();
             surfaceShapeLayer.displayName = "Surface Shape";

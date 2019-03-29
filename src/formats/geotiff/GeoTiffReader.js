@@ -428,7 +428,7 @@ define([
             }
 
             return GeoTiffUtil.getRGBAFillValue(red, green, blue, opacity);
-        }
+        };
 
         GeoTiffReader.prototype.createTypedElevationArray = function () {
             var elevationArray = [], typedElevationArray;
@@ -478,7 +478,7 @@ define([
                     else {
                         typedElevationArray = new Uint8Array(elevationArray);
                     }
-                    break
+                    break;
                 case 16:
                     if (sampleFormat === TiffConstants.SampleFormat.SIGNED) {
                         typedElevationArray = new Int16Array(elevationArray);
@@ -506,7 +506,7 @@ define([
             }
 
             return typedElevationArray;
-        }
+        };
 
         // Parse geotiff strips. Internal use only
         GeoTiffReader.prototype.parseStrips = function (returnElevation) {
@@ -536,7 +536,7 @@ define([
             }
 
             return strips;
-        }
+        };
 
         // Parse geotiff block. A block may be a strip or a tile. Internal use only.
         GeoTiffReader.prototype.parseBlock = function (returnElevation, compression, bytesPerPixel, blockByteCount,
@@ -673,7 +673,7 @@ define([
             }
 
             return block;
-        }
+        };
 
         // Parse geotiff tiles. Internal use only
         GeoTiffReader.prototype.parseTiles = function (returnElevation) {
@@ -712,7 +712,7 @@ define([
             }
 
             return tiles;
-        }
+        };
 
         // Translate a pixel/line coordinates to projection coordinate. Internal use only.
         GeoTiffReader.prototype.geoTiffImageToPCS = function (xValue, yValue) {
@@ -794,7 +794,7 @@ define([
                 upperLeft.longitude,
                 upperRight.longitude
             );
-        }
+        };
 
         // Get metadata from image file directory. Internal use only.
         GeoTiffReader.prototype.getMetadataFromImageFileDirectory = function () {
@@ -903,7 +903,7 @@ define([
                         Logger.log(Logger.LEVEL_WARNING, "Ignored GeoTiff tag: " + this.imageFileDirectories[0][i].tag);
                 }
             }
-        }
+        };
 
         // Parse GeoKeys. Internal use only.
         GeoTiffReader.prototype.parseGeoKeys = function () {
@@ -1039,7 +1039,7 @@ define([
             var nextIFDOffset = GeoTiffUtil.getBytes(this.geoTiffData, i, 4, this.isLittleEndian);
 
             if (nextIFDOffset === 0) {
-                return;
+
             }
             else {
                 this.parseImageFileDirectory(nextIFDOffset);

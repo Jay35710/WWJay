@@ -78,7 +78,7 @@ define([
             }
 
             return result;
-        }
+        };
 
         OwsServiceProvider.assembleContacts = function (element) {
             if (!element) {
@@ -104,7 +104,7 @@ define([
             }
 
             return result;
-        }
+        };
 
         OwsServiceProvider.assemblePhone = function (element) {
             if (!element) {
@@ -126,7 +126,7 @@ define([
             }
 
             return result;
-        }
+        };
 
         OwsServiceProvider.assembleAddress = function (element) {
             if (!element) {
@@ -160,7 +160,7 @@ define([
             }
 
             return result;
-        }
+        };
 
         return OwsServiceProvider;
     });

@@ -547,7 +547,7 @@ define(['../../error/ArgumentError',
                 default:
                     break;
             }
-        }
+        };
 
         /**
          * Creates a {@link Placemark} for a Point geometry.

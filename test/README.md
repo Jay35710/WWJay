@@ -82,6 +82,7 @@ Please have a look at the existing tests for reference.
      		})
      	});
      });
+
 ```
 
 For more information about the Jasmine Framework used for defining the tests,
