@@ -14,7 +14,6 @@ $(document).ready(function() {
         console.log("Ian Liu 以恆 阿嬤阿嬤")
     }
 
-
     /**
      * The Globe encapsulates the WorldWindow object (wwd) and provides application
      * specific logic for interacting with layers.
@@ -31,8 +30,6 @@ $(document).ready(function() {
 
             // Holds a map of category and observable timestamp pairs
             this.categoryTimestamps = new Map();
-
-
             // Add a BMNGOneImageLayer background layer. We're overriding the default
             // minimum altitude of the BMNGOneImageLayer so this layer always available.
             this.addLayer(new WorldWind.BMNGOneImageLayer(), {
@@ -41,11 +38,13 @@ $(document).ready(function() {
             });
 
         }
+
         /**
          * Returns an observable containing the last update timestamp for the category.
          * @param {String} category
          * @returns {Observable}
          */
+
         getCategoryTimestamp(category) {
             if (!this.categoryTimestamps.has(category)) {
                 this.categoryTimestamps.set(category, ko.observable());
@@ -72,7 +71,7 @@ $(document).ready(function() {
 
             // Multiplicity Rule: only [0..1] "base" layers can be enabled at a time
             if (layer.category === 'base') {
-                this.wwd.layers.forEach(function(item) {
+                this.wwd.layers.forEach(function (item) {
                     if (item.category === 'base' && item !== layer) {
                         item.enabled = false;
                     }
@@ -85,6 +84,17 @@ $(document).ready(function() {
 
             // Signal a change in the category
             this.updateCategoryTimestamp(layer.category);
+        }
+
+
+
+        /**
+         * Returns a new array of layers in the given category.
+         * @param {String} category E.g., "base", "overlay" or "setting".
+         * @returns {Array}
+         */
+        getLayers(category) {
+            return this.wwd.layers.filter(layer => layer.category === category);
         }
 
         /**
@@ -116,16 +126,16 @@ $(document).ready(function() {
 
             // Signal that this layer category has changed
             this.getCategoryTimestamp(layer.category);
+
         }
 
-        /**
-         * Returns a new array of layers in the given category.
-         * @param {String} category E.g., "base", "overlay" or "setting".
-         * @returns {Array}
-         */
-        getLayers(category) {
-            return this.wwd.layers.filter(layer => layer.category === category);
-        }
+
+
+
+
+
+
+
     }
 
     /**
@@ -154,6 +164,8 @@ $(document).ready(function() {
         self.toggleLayer = function(layer) {
             globe.toggleLayer(layer);
         };
+
+
     }
 
     /**
@@ -180,13 +192,15 @@ $(document).ready(function() {
         };
     }
 
+
+
     // Create a globe
     let globe = new Globe("globe-canvas");
     // Add layers to the globe
     // Add layers ordered by drawing order: first to last
     globe.addLayer(new WorldWind.BMNGLayer(), {
         category: "base",
-        enabled: false
+        enabled: false,
     });
     globe.addLayer(new WorldWind.BMNGLandsatLayer(), {
         category: "base",
@@ -209,11 +223,11 @@ $(document).ready(function() {
     });
     globe.addLayer(new WorldWind.CoordinatesDisplayLayer(globe.wwd), {
         category: "setting",
-        enabled: false
+        enabled: false,
     });
     globe.addLayer(new WorldWind.ViewControlsLayer(globe.wwd), {
         category: "setting",
-        enabled: false
+        enabled: false,
     });
     globe.addLayer(new WorldWind.CompassLayer(), {
         category: "setting",
@@ -221,24 +235,144 @@ $(document).ready(function() {
     });
     globe.addLayer(new WorldWind.StarFieldLayer(), {
         category: "setting",
-        enabled: true ,
+        enabled: true,
         displayName: "Stars"
     });
     globe.addLayer(new WorldWind.AtmosphereLayer(), {
         category: "setting",
         enabled: true,
-        time: null // or new Date()
+        time: null // new Date()
     });
 
 
 
-    // Create the view models
-    let layers = new LayersViewModel(globe);
-    let settings = new SettingsViewModel(globe);
 
-    // Bind the views to the view models
-    ko.applyBindings(layers, document.getElementById('layers'));
-    ko.applyBindings(settings, document.getElementById('settings'));
+
+    ////////////////////////
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    ////////////////////////
+
+    var highlightedItems = [];
+
+    //The common pick-handling function.
+    var handlePick = function (o) {
+        // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
+        // the mouse or tap location.
+        var x = o.clientX,
+            y = o.clientY;
+
+        var redrawRequired = highlightedItems.length > 0; // must redraw if we de-highlight previously picked items
+
+        // De-highlight any previously highlighted placemarks.
+        for (var h = 0; h < highlightedItems.length; h++) {
+            highlightedItems[h].highlighted = false;
+        }
+        highlightedItems = [];
+
+
+        // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
+        // relative to the upper left corner of the canvas rather than the upper left corner of the page.
+        var pickList = globe.wwd.pick(globe.wwd.canvasCoordinates(x, y));
+        if (pickList.objects.length > 0) {
+            redrawRequired = true;
+        }
+
+        // Highlight the items picked by simply setting their highlight flag to true.
+        if (pickList.objects.length > 0) {
+            for (var p = 0; p < pickList.objects.length; p++) {
+                pickList.objects[p].userObject.highlighted = true;
+
+                // Keep track of highlighted items in order to de-highlight them later.
+                highlightedItems.push(pickList.objects[p].userObject);
+                // Detect whether the placemark's label was picked. If so, the "labelPicked" property is true.
+                // If instead the user picked the placemark's image, the "labelPicked" property is false.
+                // Applications might use this information to determine whether the user wants to edit the label
+                // or is merely picking the placemark as a whole.
+                if (pickList.objects[p].labelPicked) {
+                    console.log("Label picked");
+                }
+            }
+        }
+
+        // Update the window if we changed anything.
+        if (redrawRequired) {
+            globe.wwd.redraw(); // redraw to make the highlighting changes take effect on the screen
+        }
+
+    };
+
+    //Listen for mouse moves and highlight the placemarks that the cursor rolls over.
+    globe.wwd.addEventListener("mousemove", handlePick);
+
+    //https://worldwind.arc.nasa.gov/web/get-started/#anchor
+    //create layer
+    var placemarkCLayer = new WorldWind.RenderableLayer("∞∞∞∞∞∞∞∞∞∞∞");
+
+    // Set up the common placemark attributes.
+    var placemarkCAttributes = new WorldWind.PlacemarkAttributes(null);
+    placemarkCAttributes.imageScale =11.1;
+    placemarkCAttributes.imageOffset = new WorldWind.Offset(
+        WorldWind.OFFSET_FRACTION, 0.0,
+        WorldWind.OFFSET_FRACTION, 0.0);
+    placemarkCAttributes.imageColor = WorldWind.Color.WHITE;//BLUE;
+    placemarkCAttributes.labelAttributes.color = WorldWind.Color.WHITE;
+    placemarkCAttributes.labelAttributes.offset = new WorldWind.Offset(
+        WorldWind.OFFSET_FRACTION, 0.5,
+        WorldWind.OFFSET_FRACTION, 1.0);
+    placemarkCAttributes.imageSource = WorldWind.configuration.baseUrl +"https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Common_lipids_lmaps.png/450px-Common_lipids_lmaps.png";//"./fat2.png";//"/image/charfat.jpg";// "/images/charfat.png";//
+    console.log(placemarkCAttributes.imageSource);
+
+
+    //postion of placemark
+    var positionC = new WorldWind.Position(23.47, 120.9575, 100.0, true, null);
+    //////////////  23.4700° N, 120.9575° E
+    //create the placemark
+    var placemarkC = new WorldWind.Placemark(positionC, false, placemarkCAttributes);
+    //create the label
+    placemarkC.label = "∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞";
+    // "Lat " + placemarkC.position.latitude.toPrecision(4).toString() + "\n" +
+    // "Lon " + placemarkC.position.longitude.toPrecision(5).toString();
+    placemarkC.alwaysOnTop = true;
+
+    placemarkC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+
+
+    //add the placemark into the layer
+    placemarkCLayer.addRenderable(placemarkC);
+
+    placemarkC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+
+    // highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkCAttributes);
+    // highlightAttributes.imageScale = 0.3;
+    // placemarkC.highlightAttributes = highlightAttributes;
+
+    globe.addLayer(placemarkCLayer, {
+        category: "markers",
+        enabled: true,
+        time: null // new Date()
+    });
+
+
+
+
+    // Activate the Knockout bindings between our view models and the html
+    let layersViewModel = new LayersViewModel(globe);
+    let settingsViewModel = new SettingsViewModel(globe);
+
+
+    ko.applyBindings(layersViewModel, document.getElementById('layers'));
+    ko.applyBindings(settingsViewModel, document.getElementById('settings'));
 
     // Auto-collapse the main menu when its button items are clicked
     $('.navbar-collapse a[role="button"]').click(function() {
@@ -249,186 +383,5 @@ $(document).ready(function() {
     $('.collapse .close').on('click', function() {
         $(this).closest('.collapse').collapse('hide');
     });
-    ////////////////////////
-    //                    //challenge 6.1
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    //                    //
-    ////////////////////////
-
-    // var highlightedItems = [];
-    //
-    // //The common pick-handling function.
-    // var handlePick = function (o) {
-    //     // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
-    //     // the mouse or tap location.
-    //     var x = o.clientX,
-    //         y = o.clientY;
-    //
-    //     var redrawRequired = highlightedItems.length > 0; // must redraw if we de-highlight previously picked items
-    //
-    //     // De-highlight any previously highlighted placemarks.
-    //     for (var h = 0; h < highlightedItems.length; h++) {
-    //         highlightedItems[h].highlighted = false;
-    //     }
-    //     highlightedItems = [];
-    //
-    //
-    //     // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
-    //     // relative to the upper left corner of the canvas rather than the upper left corner of the page.
-    //     var pickList = globe.wwd.pick(globe.canvasCoordinates(x, y));
-    //     if (pickList.objects.length > 0) {
-    //         redrawRequired = true;
-    //     }
-    //     console.log(pickList);
-    //
-    //     // Highlight the items picked by simply setting their highlight flag to true.
-    //     if (pickList.objects.length > 0) {
-    //         for (var p = 0; p < pickList.objects.length; p++) {
-    //             pickList.objects[p].userObject.highlighted = true;
-    //
-    //             // Keep track of highlighted items in order to de-highlight them later.
-    //             highlightedItems.push(pickList.objects[p].userObject);
-    //             // Detect whether the placemark's label was picked. If so, the "labelPicked" property is true.
-    //             // If instead the user picked the placemark's image, the "labelPicked" property is false.
-    //             // Applications might use this information to determine whether the user wants to edit the label
-    //             // or is merely picking the placemark as a whole.
-    //             if (pickList.objects[p].labelPicked) {
-    //                 console.log("Label picked");
-    //             }
-    //         }
-    //     }
-    //
-    //     // Update the window if we changed anything.
-    //     if (redrawRequired) {
-    //         globe.wwd.redraw(); // redraw to make the highlighting changes take effect on the screen
-    //     }
-    //
-    // };
-    // globe.wwd.addEventListener("mousemove", handlePick);
-    // //https://worldwind.arc.nasa.gov/web/get-started/#anchor
-    // //create layer
-    // var placemarkCLayer = new WorldWind.RenderableLayer("∞∞∞∞∞∞∞∞∞∞∞");
-    //
-    // // Set up the common placemark attributes.
-    // var placemarkCAttributes = new WorldWind.PlacemarkAttributes(null);
-    // placemarkCAttributes.imageScale = 0.1;
-    // placemarkCAttributes.imageOffset = new WorldWind.Offset(
-    //     WorldWind.OFFSET_FRACTION, 0.0,
-    //     WorldWind.OFFSET_FRACTION, 0.0);
-    // placemarkCAttributes.imageColor = WorldWind.Color.WHITE;//BLUE;
-    // placemarkCAttributes.labelAttributes.color = WorldWind.Color.WHITE;
-    // placemarkCAttributes.labelAttributes.offset = new WorldWind.Offset(
-    //     WorldWind.OFFSET_FRACTION, 0.5,
-    //     WorldWind.OFFSET_FRACTION, 1.0);
-    // placemarkCAttributes.imageSource = WorldWind.configuration.baseUrl +"/images/Screen Shot 2019-01-09 at 4.03.10 PM.png";//"/image/charfat.jpg";// "/images/charfat.png";//
-    //
-    //
-    //
-    // //postion of placemark
-    // var positionC = new WorldWind.Position(23.47, 120.9575, 100.0, true, null);
-    // //////////////  23.4700° N, 120.9575° E
-    // //create the placemark
-    // var placemarkC = new WorldWind.Placemark(positionC, false, placemarkCAttributes);
-    // //create the label
-    // placemarkC.label = "∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞";
-    // // "Lat " + placemarkC.position.latitude.toPrecision(4).toString() + "\n" +
-    // // "Lon " + placemarkC.position.longitude.toPrecision(5).toString();
-    // placemarkC.alwaysOnTop = true;
-    //
-    // placemarkC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-    //
-    //
-    // //add the placemark into the layer
-    // placemarkCLayer.addRenderable(placemarkC);
-    //
-    // placemarkC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
-    //
-    // highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkCAttributes);
-    // highlightAttributes.imageScale = 0.3;
-    // placemarkC.highlightAttributes = highlightAttributes;
-    //
-    //
-    //
-    //
-
-    // //  http://cs.aworldbridgelabs.com:8080/geoserver/web/
-    // //  http://aworldbridgelabs.com:8080/geoserver/FatWMS/wms?service=WMS&version=1.1.0&request=GetMap&layers=FatWMS:pointlands&styles=&bbox=-105.370531,39.914352,-105.065309,40.217396&width=768&height=762&srs=EPSG:4269&format=application/openlayers
-    // // Web Map Service information from NASA's Near Earth Observations WMS
-    // //var serviceAddress = "./data/FatWMS.js";
-    // // var serviceAddress = "https://neo.sci.gsfc.nasa.gov/wms/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0";
-    // var serviceAddress = "http://cs.aworldbridgelabs.com:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
-    // // Named layer displaying Average Temperature data
-    // var layerName = "FatWMS:pointlands";
-    // // Called asynchronously to parse and create the WMS layer
-    // var createLayer = function (xmlDom) {
-    //     // Create a WmsCapabilities object from the XML DOM
-    //     var wms = new WorldWind.WmsCapabilities(xmlDom);
-    //     console.log(wms);
-    //     // Retrieve a WmsLayerCapabilities object by the desired layer name
-    //     var wmsLayerCapabilities = wms.getNamedLayer(layerName);
-    //     console.log(wmsLayerCapabilities);
-    //     // Form a configuration object from the WmsLayerCapability object
-    //     var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities);
-    //     // Modify the configuration objects title property to a more user friendly title
-    //     wmsConfig.title = "øøøøøøøøø";
-    //     // Create the WMS Layer from the configuration object
-    //     var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
-    //
-    //     // Add the layers to WorldWind and update the layer manager
-    //     globe.addLayer(wmsLayer);
-    //     layerManager.synchronizeLayerList();
-    //     wmsLayer.enabled = true;
-    //     console.log("char");
-    //     var slider3 = document.getElementById("slider3");
-    //     var LayerToggle3 = function () {
-    //         if (wmsLayer.enabled === true) {
-    //             slider3.onclick = function () {
-    //                 wmsLayer.enabled = false
-    //
-    //             }
-    //         }
-    //         if (wmsLayer.enabled === false) {
-    //             slider3.onclick = function () {
-    //                 wmsLayer.enabled = true
-    //             }
-    //         }
-    //     };
-    //     addEventListener("click", LayerToggle3);
-    //
-    //     var slider4 = document.getElementById("slider4");
-    //     var LayerToggle4 = function () {
-    //         if (wmsLayer.enabled === true) {
-    //             slider4.onclick = function () {
-    //                 wmsLayer.enabled = false
-    //
-    //             }
-    //         }
-    //         if (wmsLayer.enabled === false) {
-    //             slider4.onclick = function () {
-    //                 wmsLayer.enabled = true
-    //             }
-    //         }
-    //     };
-    //     addEventListener("click", LayerToggle4);
-    // };
-    //
-    // // Called if an error occurs during WMS Capabilities document retrieval
-    // var logError = function (jqXhr, text, exception) {
-    //     console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
-    // };
-    //
-    //
-    // $.get(serviceAddress).done(createLayer).fail(logError);
-
 
 });
-

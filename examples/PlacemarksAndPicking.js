@@ -229,7 +229,7 @@ requirejs(['./WorldWindShim',
         placemarkCAttributes.labelAttributes.offset = new WorldWind.Offset(
             WorldWind.OFFSET_FRACTION, 0.5,
             WorldWind.OFFSET_FRACTION, 1.0);
-        placemarkCAttributes.imageSource = WorldWind.configuration.baseUrl +"/images/Screen Shot 2019-01-09 at 4.03.10 PM.png";//"/image/charfat.jpg";// "/images/charfat.png";//
+        placemarkCAttributes.imageSource = WorldWind.configuration.baseUrl +"/images/fat.png";//"/image/charfat.jpg";// "/images/charfat.png";//
 
 
 
