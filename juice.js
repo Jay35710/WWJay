@@ -321,7 +321,7 @@ $(document).ready(function() {
 
     // Set up the common placemark attributes.
     var placemarkCAttributes = new WorldWind.PlacemarkAttributes(null);
-    placemarkCAttributes.imageScale =11.1;
+    placemarkCAttributes.imageScale =0.1;
     placemarkCAttributes.imageOffset = new WorldWind.Offset(
         WorldWind.OFFSET_FRACTION, 0.0,
         WorldWind.OFFSET_FRACTION, 0.0);
@@ -330,8 +330,9 @@ $(document).ready(function() {
     placemarkCAttributes.labelAttributes.offset = new WorldWind.Offset(
         WorldWind.OFFSET_FRACTION, 0.5,
         WorldWind.OFFSET_FRACTION, 1.0);
-    placemarkCAttributes.imageSource = WorldWind.configuration.baseUrl +"https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Common_lipids_lmaps.png/450px-Common_lipids_lmaps.png";//"./fat2.png";//"/image/charfat.jpg";// "/images/charfat.png";//
+    placemarkCAttributes.imageSource =  "fat2.png";//"/image/charfat.jpg";// "/images/charfat.png";// "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Common_lipids_lmaps.png/450px-Common_lipids_lmaps.png";
     console.log(placemarkCAttributes.imageSource);
+    console.log(WorldWind.configuration.baseUrl);
 
 
     //postion of placemark
@@ -351,18 +352,120 @@ $(document).ready(function() {
     //add the placemark into the layer
     placemarkCLayer.addRenderable(placemarkC);
 
-    placemarkC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+
+
+    // Set up the common placemark attributes.
+    var placemarkCCAttributes = new WorldWind.PlacemarkAttributes(null);
+    placemarkCCAttributes.imageScale =0.1;
+    placemarkCCAttributes.imageOffset = new WorldWind.Offset(
+        WorldWind.OFFSET_FRACTION, 0.0,
+        WorldWind.OFFSET_FRACTION, 0.0);
+    placemarkCCAttributes.imageColor = WorldWind.Color.WHITE;//BLUE;
+    placemarkCCAttributes.labelAttributes.color = WorldWind.Color.WHITE;
+    placemarkCCAttributes.labelAttributes.offset = new WorldWind.Offset(
+        WorldWind.OFFSET_FRACTION, 0.5,
+        WorldWind.OFFSET_FRACTION, 1.0);
+    placemarkCCAttributes.imageSource =  "fat2.png";//"/image/charfat.jpg";// "/images/charfat.png";// "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Common_lipids_lmaps.png/450px-Common_lipids_lmaps.png";
+
+
+
+    //postion of placemark
+    var positionCC = new WorldWind.Position(90, 0, 100.0, true, null);
+    //////////////  23.4700° N, 120.9575° E
+    //create the placemark
+    var placemarkCC = new WorldWind.Placemark(positionCC, false, placemarkCCAttributes);
+    //create the label
+    placemarkCC.label = "◊◊◊◊◊◊◊◊◊";
+    // "Lat " + placemarkC.position.latitude.toPrecision(4).toString() + "\n" +
+    // "Lon " + placemarkC.position.longitude.toPrecision(5).toString();
+    placemarkCC.alwaysOnTop = true;
+
+    placemarkCC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+
+
+    //add the placemark into the layer
+    placemarkCLayer.addRenderable(placemarkCC);
+
+    placemarkCC.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
 
     // highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkCAttributes);
     // highlightAttributes.imageScale = 0.3;
     // placemarkC.highlightAttributes = highlightAttributes;
 
     globe.addLayer(placemarkCLayer, {
-        category: "markers",
-        enabled: true,
-        time: null // new Date()
+        category: "setting",
+        enabled: false,
     });
 
+
+
+    ////////////////////////
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    //                    //
+    ////////////////////////challenge 6.1
+
+    var box = document.createElement("div");
+    box.innerHTML = "<button id ='CharFatClose' >close</button><br><h1>CharJustFat</h1><p> JustCharFat!!!</p><br><img alt = 'CharFat' src='https://upload.wikimedia.org/wikipedia/commons/2/20/Common_lipids_lmaps.png' width='300px'>" +
+        "<br><h2 style = 'font-size:70%'>source:https://en.wikipedia.org/wiki/Lipid</h2><img alt = 'char' src = 'https://qph.fs.quoracdn.net/main-raw-457280285-ymcqgsdumwxocugzufohaiiqrwoypzxb.jpeg' width = '300px'><br><h2 style = 'font-size:70%'>source:https://www.quora.com/profile/Charlie-Cai-16</h2>";
+    box.id = "CharFat";
+    document.body.appendChild(box);
+    var CharFatClose = document.getElementById("CharFatClose");
+    CharFatClose.onclick = function(){
+        box.style.display = "none";
+    };
+
+    var popUp = function(o){
+
+
+        var x = o.clientX,
+            y = o.clientY;
+
+        for (var h = 0; h < highlightedItems.length; h++) {
+            highlightedItems[h].highlighted = false;
+        }
+
+        var pickListCF = globe.wwd.pick(globe.wwd.canvasCoordinates(x, y));
+
+        highlightedItems = [];
+
+        if (pickListCF.objects.length > 0) {
+            for (var p = 0; p < pickListCF.objects.length; p++) {
+                pickListCF.objects[p].userObject.highlighted = true;
+
+                // Keep track of highlighted items in order to de-highlight them later.
+                highlightedItems.push(pickListCF.objects[p].userObject);
+
+                // Detect whether the placemark's label was picked. If so, the "labelPicked" property is true.
+                // If instead the user picked the placemark's image, the "labelPicked" property is false.
+                // Applications might use this information to determine whether the user wants to edit the label
+                // or is merely picking the placemark as a whole.
+                if (pickListCF.objects[p].labelPicked) {
+                    console.log("Label picked");
+                }
+                //console.log(pickListCF.objects[p].userObject instanceof  WorldWind.Placemark);// WorldWind.Placemark);
+
+
+                if(pickListCF.objects[p].userObject instanceof WorldWind.Placemark && pickListCF.objects[p].userObject.label === "∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞"  ){
+                    box.style.display = "block";
+                    console.log('fat');
+                    console.log(box.style.display)
+                }
+            }
+        }
+    };
+
+
+    globe.wwd.addEventListener("click", popUp);
 
 
 
@@ -385,3 +488,4 @@ $(document).ready(function() {
     });
 
 });
+//http://10.11.90.16:8080/geoserver
