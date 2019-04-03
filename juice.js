@@ -331,9 +331,6 @@ $(document).ready(function() {
         WorldWind.OFFSET_FRACTION, 0.5,
         WorldWind.OFFSET_FRACTION, 1.0);
     placemarkCAttributes.imageSource =  "fat2.png";//"/image/charfat.jpg";// "/images/charfat.png";// "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Common_lipids_lmaps.png/450px-Common_lipids_lmaps.png";
-    console.log(placemarkCAttributes.imageSource);
-    console.log(WorldWind.configuration.baseUrl);
-
 
     //postion of placemark
     var positionC = new WorldWind.Position(23.47, 120.9575, 100.0, true, null);
@@ -393,8 +390,8 @@ $(document).ready(function() {
     // placemarkC.highlightAttributes = highlightAttributes;
 
     globe.addLayer(placemarkCLayer, {
-        category: "setting",
-        enabled: false,
+        category: "fat",
+        enabled: true,
     });
 
 
@@ -415,7 +412,7 @@ $(document).ready(function() {
     ////////////////////////challenge 6.1
 
     var box = document.createElement("div");
-    box.innerHTML = "<button id ='CharFatClose' >close</button><br><h1>CharJustFat</h1><p> JustCharFat!!!</p><br><img alt = 'CharFat' src='https://upload.wikimedia.org/wikipedia/commons/2/20/Common_lipids_lmaps.png' width='300px'>" +
+    box.innerHTML = "<button id ='CharFatClose' >close</button><br><h1>CharJustFat🇹🇼🇹🇼🇹🇼🇹🇼</h1><p> JustCharFat!!!🇹🇼🇹🇼🇹🇼🇹🇼</p><br><img alt = 'CharFat' src='https://upload.wikimedia.org/wikipedia/commons/2/20/Common_lipids_lmaps.png' width='300px'>" +
         "<br><h2 style = 'font-size:70%'>source:https://en.wikipedia.org/wiki/Lipid</h2><img alt = 'char' src = 'https://qph.fs.quoracdn.net/main-raw-457280285-ymcqgsdumwxocugzufohaiiqrwoypzxb.jpeg' width = '300px'><br><h2 style = 'font-size:70%'>source:https://www.quora.com/profile/Charlie-Cai-16</h2>";
     box.id = "CharFat";
     document.body.appendChild(box);
@@ -457,6 +454,7 @@ $(document).ready(function() {
 
                 if(pickListCF.objects[p].userObject instanceof WorldWind.Placemark && pickListCF.objects[p].userObject.label === "∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞"  ){
                     box.style.display = "block";
+                    console.clear();
                     console.log('fat');
                     console.log(box.style.display)
                 }
@@ -468,6 +466,63 @@ $(document).ready(function() {
     globe.wwd.addEventListener("click", popUp);
 
 
+    //<a href="#" title="Header" data-toggle="popover" data-trigger="hover" data-content="Some content">Hover over me</a>
+    var charFatPop = document.createElement("div");
+    charFatPop.innerHTML ='<a id ="charFatPop" href="https://www.cdc.gov/healthyschools/obesity/index.htm" title="CharFatFat" data-content="charJustFat🇹🇼🇹🇼🇹🇼" data-toggle="popover" data-trigger="hover" ></a>';
+    //var charFatPopPop = document.querySelector("#charFatPopPop");
+    document.body.appendChild(charFatPop);
+
+    console.log(charFatPop);
+
+
+    var popOverNew = function(o) {
+        var x = o.clientX,
+            y = o.clientY;
+
+        for (var h = 0; h < highlightedItems.length; h++) {
+            highlightedItems[h].highlighted = false;
+
+            var pickListCF2 = globe.wwd.pick(globe.wwd.canvasCoordinates(x, y));
+
+
+            highlightedItems = [];
+
+            if (pickListCF2.objects.length > 0) {
+                for (var p = 0; p < pickListCF2.objects.length; p++) {
+                    pickListCF2.objects[p].userObject.highlighted = true;
+
+                    // Keep track of highlighted items in order to de-highlight them later.
+                    highlightedItems.push(pickListCF2.objects[p].userObject);
+                    if (pickListCF2.objects[p].userObject instanceof WorldWind.Placemark && pickListCF2.objects[p].userObject.label === "◊◊◊◊◊◊◊◊◊" ) {
+                        console.log("fat");
+                        $('[data-toggle="popover"]').popover('show');
+
+                    }else {
+                        $('[data-toggle="popover"]').popover('hide');
+                    }
+                }
+            }
+        }
+    };
+
+    globe.wwd.addEventListener("mousemove", popOverNew);
+
+    var slider2 = document.getElementById("slider2");
+    var LayerToggle2= function(){
+        if(placemarkCLayer.enabled === true){
+            console.log("enabled");
+            slider2.onclick=function () {
+                placemarkCLayer.enabled = false
+            }
+        }
+        if (placemarkCLayer.enabled === false){
+            console.log("no");
+            slider2.onclick=function(){
+                placemarkCLayer.enabled = true
+            }
+        }
+    };
+    addEventListener("click", LayerToggle2);
 
     // Activate the Knockout bindings between our view models and the html
     let layersViewModel = new LayersViewModel(globe);
