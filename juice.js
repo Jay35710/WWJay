@@ -524,6 +524,59 @@ $(document).ready(function() {
     };
     addEventListener("click", LayerToggle2);
 
+
+
+    //  http://cs.aworldbridgelabs.com:8080/geoserver/web/
+    //  http://aworldbridgelabs.com:8080/geoserver/FatWMS/wms?service=WMS&version=1.1.0&request=GetMap&layers=FatWMS:pointlands&styles=&bbox=-105.370531,39.914352,-105.065309,40.217396&width=768&height=762&srs=EPSG:4269&format=application/openlayers
+    var serviceAddress = "http://10.11.90.16:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
+    // Named layer displaying Average Temperature data
+    var layerName = "FatWMS:roads";
+    // Called asynchronously to parse and create the WMS layer
+    var createLayer = function (xmlDom) {
+        // Create a WmsCapabilities object from the XML DOM
+        var wms = new WorldWind.WmsCapabilities(xmlDom);
+        console.log(wms);
+        // Retrieve a WmsLayerCapabilities object by the desired layer name
+        var wmsLayerCapabilities = wms.getNamedLayer(layerName);
+        // Form a configuration object from the WmsLayerCapability object
+        var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities);
+        // Modify the configuration objects title property to a more user friendly title
+        wmsConfig.title = "øøøøøøøøø";
+        // Create the WMS Layer from the configuration object
+        var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
+
+        // Add the layers to WorldWind and update the layer manager
+        globe.addLayer(wmsLayer, {
+            category: "settings",
+            enabled: "true"
+        });
+        console.log("char");
+        var slider3 = document.getElementById("slider3");
+        var LayerToggle3 = function () {
+            if (wmsLayer.enabled === true) {
+                slider3.onclick = function () {
+                    wmsLayer.enabled = false
+
+                }
+            }
+            if (wmsLayer.enabled === false) {
+                slider3.onclick = function () {
+                    wmsLayer.enabled = true
+                }
+            }
+        };
+        addEventListener("click", LayerToggle3);
+    };
+
+
+    // Called if an error occurs during WMS Capabilities document retrieval
+    var logError = function (jqXhr, text, exception) {
+        console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
+    };
+
+
+    $.get(serviceAddress).done(createLayer).fail(logError);
+
     // Activate the Knockout bindings between our view models and the html
     let layersViewModel = new LayersViewModel(globe);
     let settingsViewModel = new SettingsViewModel(globe);
