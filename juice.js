@@ -390,7 +390,7 @@ $(document).ready(function() {
     // placemarkC.highlightAttributes = highlightAttributes;
 
     globe.addLayer(placemarkCLayer, {
-        category: "fat",
+        category: "marker",
         enabled: true,
     });
 
