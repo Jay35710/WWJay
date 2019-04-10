@@ -413,7 +413,8 @@ $(document).ready(function() {
 
     var box = document.createElement("div");
     box.innerHTML = "<button id ='CharFatClose' >close</button><br><h1>CharJustFat🇹🇼🇹🇼🇹🇼🇹🇼</h1><p> JustCharFat!!!🇹🇼🇹🇼🇹🇼🇹🇼</p><br><img alt = 'CharFat' src='https://upload.wikimedia.org/wikipedia/commons/2/20/Common_lipids_lmaps.png' width='300px'>" +
-        "<br><h2 style = 'font-size:70%'>source:https://en.wikipedia.org/wiki/Lipid</h2><img alt = 'char' src = 'https://qph.fs.quoracdn.net/main-raw-457280285-ymcqgsdumwxocugzufohaiiqrwoypzxb.jpeg' width = '300px'><br><h2 style = 'font-size:70%'>source:https://www.quora.com/profile/Charlie-Cai-16</h2>";
+        "<br><h2 style = 'font-size:70%'>source:https://en.wikipedia.org/wiki/Lipid</h2><img alt = 'char' src = 'https://qph.fs.quoracdn.net/main-raw-457280285-ymcqgsdumwxocugzufohaiiqrwoypzxb.jpeg' width = '300px'><br><h2 style = 'font-size:70%'>source:https://www.quora.com/profile/Charlie-Cai-16</h2>" +
+        "<img src='http://imgs.ntdtv.com/pic/2016/8-3/p7584822a362701639.jpg' width='100%'>";
     box.id = "CharFat";
     document.body.appendChild(box);
     var CharFatClose = document.getElementById("CharFatClose");
@@ -495,10 +496,10 @@ $(document).ready(function() {
                     highlightedItems.push(pickListCF2.objects[p].userObject);
                     if (pickListCF2.objects[p].userObject instanceof WorldWind.Placemark && pickListCF2.objects[p].userObject.label === "◊◊◊◊◊◊◊◊◊" ) {
                         console.log("fat");
-                        // $('[data-toggle="popover"]').popover('show');
+                        $('[data-toggle="popover"]').popover('show');
 
                     }else {
-                        // $('[data-toggle="popover"]').popover('hide');
+                        $('[data-toggle="popover"]').popover('hide');
 
                     }
                 }
@@ -530,7 +531,6 @@ $(document).ready(function() {
     //  http://cs.aworldbridgelabs.com:8080/geoserver/web/
     //  http://aworldbridgelabs.com:8080/geoserver/FatWMS/wms?service=WMS&version=1.1.0&request=GetMap&layers=FatWMS:pointlands&styles=&bbox=-105.370531,39.914352,-105.065309,40.217396&width=768&height=762&srs=EPSG:4269&format=application/openlayers
     var serviceAddress = "http://10.11.90.16:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities";
-    console.log(serviceAddress);
     // Named layer displaying Average Temperature data
     var layerName = "FatWMS:giant_polygon";
     // Called asynchronously to parse and create the WMS layer
@@ -546,6 +546,8 @@ $(document).ready(function() {
         wmsConfig.title = "øøøøøøøøø";
         // Create the WMS Layer from the configuration object
         var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
+
+        console.log("charllllllllie cai iiisss fat0");
 
         // Add the layers to WorldWind and update the layer manager
         globe.addLayer(wmsLayer, {
@@ -573,15 +575,17 @@ $(document).ready(function() {
 
     // Called if an error occurs during WMS Capabilities document retrieval
     var logError = function (jqXhr, text, exception) {
-        console.error("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
+        console.error("There was a failure retrieving the capabilities document:%%% " + text + " %%%exception:%%% " + exception);
     };
 
-    var ajax = new XMLHttpRequest();
-    console.log(ajax);
+    // var ajax = new XMLHttpRequest();
+    // console.log(ajax);
     // $.ajax(serviceAddress).done(createLayer).fail(logError);
     $.ajax({
         type: "GET",
         crossOrigin: true,
+        crossDomain: true,
+        dataType:"ShapeFile",
         // headers: {"Access-Control-Allow-Origin":"*"},
         url: "http://10.11.90.16:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities"
     }).done(createLayer).fail(logError);
