@@ -495,10 +495,10 @@ $(document).ready(function() {
                     highlightedItems.push(pickListCF2.objects[p].userObject);
                     if (pickListCF2.objects[p].userObject instanceof WorldWind.Placemark && pickListCF2.objects[p].userObject.label === "◊◊◊◊◊◊◊◊◊" ) {
                         console.log("fat");
-                        $('[data-toggle="popover"]').popover('show');
+                        // $('[data-toggle="popover"]').popover('show');
 
                     }else {
-                        $('[data-toggle="popover"]').popover('hide');
+                        // $('[data-toggle="popover"]').popover('hide');
 
                     }
                 }
@@ -576,13 +576,15 @@ $(document).ready(function() {
         console.error("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
     };
 
-    // $.get(serviceAddress).done(createLayer).fail(logError);
-    // $.ajax({
-    //     type: "GET",
-    //     crossOrigin: true,
-    //     // headers: {"Access-Control-Allow-Origin":"*"},
-    //     url: "http://10.11.90.16:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities"
-    // }).done(createLayer).fail(logError);
+    var ajax = new XMLHttpRequest();
+    console.log(ajax);
+    // $.ajax(serviceAddress).done(createLayer).fail(logError);
+    $.ajax({
+        type: "GET",
+        crossOrigin: true,
+        // headers: {"Access-Control-Allow-Origin":"*"},
+        url: "http://10.11.90.16:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities"
+    }).done(createLayer).fail(logError);
 
 
     // Activate the Knockout bindings between our view models and the html
