@@ -547,7 +547,7 @@ $(document).ready(function() {
         // Create the WMS Layer from the configuration object
         var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
 
-        console.log("charllllllllie cai iiisss fat0");
+        console.log("charllllllllie cai iiisss fffffaaaaatt");
 
         // Add the layers to WorldWind and update the layer manager
         globe.addLayer(wmsLayer, {
@@ -575,21 +575,20 @@ $(document).ready(function() {
 
     // Called if an error occurs during WMS Capabilities document retrieval
     var logError = function (jqXhr, text, exception) {
-        console.error("There was a failure retrieving the capabilities document:%%% " + text + " %%%exception:%%% " + exception);
+        console.log("There was a failure retrieving the capabilities document:%%% " + text + " %%%exception:%%% " + exception);
     };
 
     // var ajax = new XMLHttpRequest();
     // console.log(ajax);
-    // $.ajax(serviceAddress).done(createLayer).fail(logError);
-    $.ajax({
-        type: "GET",
-        crossOrigin: true,
-        crossDomain: true,
-        dataType:"ShapeFile",
-        // headers: {"Access-Control-Allow-Origin":"*"},
-        url: "http://10.11.90.16:8080/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities"
-    }).done(createLayer).fail(logError);
-
+    $.get(serviceAddress).done(createLayer).fail(logError);
+    // $.ajax({
+    //     type: "GET",
+    //     crossOrigin: true,
+    //     // crossDomain: true,
+    //     // dataType:"ShapeFile",
+    //     // headers: {"Access-Control-Allow-Origin":"*"},
+    //     url: serviceAddress
+    // }).done(createLayer).fail(logError);
 
     // Activate the Knockout bindings between our view models and the html
     let layersViewModel = new LayersViewModel(globe);
