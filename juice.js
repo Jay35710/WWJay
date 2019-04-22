@@ -508,7 +508,8 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
 
     var slider2 = document.getElementById("slider2");
     slider2.onclick = function(){
-        placemarkCLayer.enabled = !placemarkCLayer.enabled
+        placemarkCLayer.enabled = !placemarkCLayer.enabled;
+        globe.wwd.redraw();
     };
     // if(placemarkCLayer.enabled === true){
     //     console.log("enabled");
@@ -560,7 +561,8 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
         console.log("char");
         var slider3 = document.getElementById("slider3");
         slider3.onclick = function(){
-            wmsLayer.enabled = !wmsLayer.enabled
+            wmsLayer.enabled = !wmsLayer.enabled;
+            globe.wwd.redraw();
         }
         // if (wmsLayer.enabled === true) {
         //     slider3.onclick = function () {
@@ -654,7 +656,8 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
 
     var slider4 = document.getElementById("slider4");
     slider4.onclick = function(){
-        heatMap.enabled = !heatMap.enabled
+        heatMap.enabled = !heatMap.enabled;
+        globe.wwd.redraw();
     };
 
 
