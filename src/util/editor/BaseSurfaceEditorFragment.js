@@ -192,7 +192,7 @@ define([
         BaseSurfaceEditorFragment.prototype.createControlPoint = function(controlPoints, attributes, purpose, index) {
             var controlPoint = new Placemark(new Location(0, 0), false, attributes);
 
-            controlPoint.altitudeMode = WorldWind.CLAMP_TO_GROUND;
+            controlPoint.altitudeMode = WorldWind.CLAMP_TO_GROUND
 
             controlPoint.userProperties.purpose = purpose;
 
@@ -444,7 +444,7 @@ define([
                     shadowControlPoint.position);
             }
 
-        };
+        }
 
         return BaseSurfaceEditorFragment;
     }

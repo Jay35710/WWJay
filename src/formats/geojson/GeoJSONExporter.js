@@ -109,7 +109,7 @@ define(['../../error/ArgumentError',
                     sb = sb + '"' + GeoJSONConstants.FIELD_TYPE + '":"' + GeoJSONConstants.TYPE_GEOMETRY_COLLECTION + '"';
                     sb = sb + ',"' + GeoJSONConstants.FIELD_GEOMETRIES + '":[';
                     for (var i = 0; i < renderables.length; i++) {
-                        var exportedRenderable = this.exportRenderable(renderables[i]);
+                        var exportedRenderable = this.exportRenderable(renderables[i])
                         if (exportedRenderable) {
                             sb = sb + exportedRenderable;
                             sb = sb + ',';

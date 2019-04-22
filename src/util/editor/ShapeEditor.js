@@ -466,7 +466,7 @@ define([
          */
         ShapeEditor.prototype.isCreatorEnabled = function() {
             return this.creatorEnabled;
-        };
+        }
 
         /**
          * Arms and disarms the shape editor create mode. When armed, editor monitors user input and builds the
@@ -479,7 +479,7 @@ define([
             if (this.creatorEnabled != creatorEnabled) {
                 this.creatorEnabled = creatorEnabled;
             }
-        };
+        }
 
         // Internal use only.
         // Called by {@link ShapeEditor#edit} to initialize the control elements used for editing.

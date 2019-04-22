@@ -49,7 +49,7 @@ define([
                 if (child.localName === "ProviderName") {
                     this.providerName = child.textContent;
                 } else if (child.localName === "ProviderSite") {
-                    this.providerSiteUrl = child.getAttribute("xlink:href");
+                    this.providerSiteUrl = "http://10.11.90.16:9084/" + child.getAttribute("xlink:href");
                 } else if (child.localName === "ServiceContact") {
                     this.serviceContact = OwsServiceProvider.assembleServiceContact(child);
                 }
@@ -78,7 +78,7 @@ define([
             }
 
             return result;
-        };
+        }
 
         OwsServiceProvider.assembleContacts = function (element) {
             if (!element) {
@@ -104,7 +104,7 @@ define([
             }
 
             return result;
-        };
+        }
 
         OwsServiceProvider.assemblePhone = function (element) {
             if (!element) {
@@ -126,7 +126,7 @@ define([
             }
 
             return result;
-        };
+        }
 
         OwsServiceProvider.assembleAddress = function (element) {
             if (!element) {
@@ -160,7 +160,7 @@ define([
             }
 
             return result;
-        };
+        }
 
         return OwsServiceProvider;
     });

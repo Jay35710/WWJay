@@ -243,7 +243,7 @@ define([], function () {
             case NEUTRAL:
                 return this.neutral(char);
             case KEYWORD:
-                return this.keyword(char);
+                return this.keyword(char)
             case QUOTED:
                 return this.quoted(char);
             case AFTERQUOTE:
@@ -288,7 +288,7 @@ define([], function () {
                 this.state = ENDED;
             }
 
-
+            return;
         }
     };
     Parser.prototype.number = function(char) {
@@ -309,7 +309,7 @@ define([], function () {
             return;
         }
         this.word += char;
-
+        return;
     };
     Parser.prototype.keyword = function(char) {
         if (keyword.test(char)) {
@@ -669,7 +669,7 @@ define([], function () {
             else {
                 console.log(name);
             }
-
+            return;
         }
 
 

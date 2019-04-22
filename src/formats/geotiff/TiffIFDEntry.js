@@ -198,7 +198,7 @@ define([
                 default:
                     return -1;
             }
-        };
+        }
 
         /**
          * Get the value of an image file directory.

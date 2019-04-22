@@ -266,54 +266,54 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
     var highlightedItems = [];
 
     //The common pick-handling function.
-    var handlePick = function (o) {
-        // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
-        // the mouse or tap location.
-        var x = o.clientX,
-            y = o.clientY;
-
-        var redrawRequired = highlightedItems.length > 0; // must redraw if we de-highlight previously picked items
-
-        // De-highlight any previously highlighted placemarks.
-        for (var h = 0; h < highlightedItems.length; h++) {
-            highlightedItems[h].highlighted = false;
-        }
-        highlightedItems = [];
-
-
-        // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
-        // relative to the upper left corner of the canvas rather than the upper left corner of the page.
-        var pickList = globe.wwd.pick(globe.wwd.canvasCoordinates(x, y));
-        if (pickList.objects.length > 0) {
-            redrawRequired = true;
-        }
-
-        // Highlight the items picked by simply setting their highlight flag to true.
-        if (pickList.objects.length > 0) {
-            for (var p = 0; p < pickList.objects.length; p++) {
-                pickList.objects[p].userObject.highlighted = true;
-
-                // Keep track of highlighted items in order to de-highlight them later.
-                highlightedItems.push(pickList.objects[p].userObject);
-                // Detect whether the placemark's label was picked. If so, the "labelPicked" property is true.
-                // If instead the user picked the placemark's image, the "labelPicked" property is false.
-                // Applications might use this information to determine whether the user wants to edit the label
-                // or is merely picking the placemark as a whole.
-                if (pickList.objects[p].labelPicked) {
-                    console.log("Label picked");
-                }
-            }
-        }
-
-        // Update the window if we changed anything.
-        if (redrawRequired) {
-            globe.wwd.redraw(); // redraw to make the highlighting changes take effect on the screen
-        }
-
-    };
-
-    //Listen for mouse moves and highlight the placemarks that the cursor rolls over.
-    globe.wwd.addEventListener("mousemove", handlePick);
+    // var handlePick = function (o) {
+    //     // The input argument is either an Event or a TapRecognizer. Both have the same properties for determining
+    //     // the mouse or tap location.
+    //     var x = o.clientX,
+    //         y = o.clientY;
+    //
+    //     var redrawRequired = highlightedItems.length > 0; // must redraw if we de-highlight previously picked items
+    //
+    //     // De-highlight any previously highlighted placemarks.
+    //     for (var h = 0; h < highlightedItems.length; h++) {
+    //         highlightedItems[h].highlighted = false;
+    //     }
+    //     highlightedItems = [];
+    //
+    //
+    //     // Perform the pick. Must first convert from window coordinates to canvas coordinates, which are
+    //     // relative to the upper left corner of the canvas rather than the upper left corner of the page.
+    //     var pickList = globe.wwd.pick(globe.wwd.canvasCoordinates(x, y));
+    //     if (pickList.objects.length > 0) {
+    //         redrawRequired = true;
+    //     }
+    //
+    //     // Highlight the items picked by simply setting their highlight flag to true.
+    //     if (pickList.objects.length > 0) {
+    //         for (var p = 0; p < pickList.objects.length; p++) {
+    //             pickList.objects[p].userObject.highlighted = true;
+    //
+    //             // Keep track of highlighted items in order to de-highlight them later.
+    //             highlightedItems.push(pickList.objects[p].userObject);
+    //             // Detect whether the placemark's label was picked. If so, the "labelPicked" property is true.
+    //             // If instead the user picked the placemark's image, the "labelPicked" property is false.
+    //             // Applications might use this information to determine whether the user wants to edit the label
+    //             // or is merely picking the placemark as a whole.
+    //             if (pickList.objects[p].labelPicked) {
+    //                 console.log("Label picked");
+    //             }
+    //         }
+    //     }
+    //
+    //     // Update the window if we changed anything.
+    //     if (redrawRequired) {
+    //         globe.wwd.redraw(); // redraw to make the highlighting changes take effect on the screen
+    //     }
+    //
+    // };
+    //
+    // //Listen for mouse moves and highlight the placemarks that the cursor rolls over.
+    // globe.wwd.addEventListener("mousemove", handlePick);
 
     //https://worldwind.arc.nasa.gov/web/get-started/#anchor
     //create layer
@@ -389,10 +389,7 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
     // highlightAttributes.imageScale = 0.3;
     // placemarkC.highlightAttributes = highlightAttributes;
 
-    globe.addLayer(placemarkCLayer, {
-        category: "marker",
-        enabled: true,
-    });
+    globe.wwd.addLayer(placemarkCLayer);
 
 
 
@@ -513,19 +510,20 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
     slider2.onclick = function(){
         placemarkCLayer.enabled = !placemarkCLayer.enabled
     };
-    // var LayerToggle2= function(){
-    //     if(placemarkCLayer.enabled === true){
-    //         console.log("enabled");
-    //         slider2.onclick=function () {
-    //             placemarkCLayer.enabled = false
-    //         }
+    // if(placemarkCLayer.enabled === true){
+    //     console.log("enabled");
+    //     slider2.onclick=function () {
+    //         placemarkCLayer.enabled = !placemarkCLayer.enabled
     //     }
-    //     if (placemarkCLayer.enabled === false){
-    //         console.log("no");
-    //         slider2.onclick=function(){
-    //             placemarkCLayer.enabled = true
-    //         }
     //     }
+    // };
+    // if (placemarkCLayer.enabled === false){
+    //     console.log("no");
+    //     slider2.onclick=function(){
+    //         placemarkCLayer.enabled = !placemarkCLayer.enabled
+    //     }
+
+
 
 
 
@@ -554,27 +552,35 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
         // Add the layers to WorldWind and update the layer manager
         globe.wwd.addLayer(wmsLayer);
 
-        wmsLayer.enabled= false;
-
+        wmsLayer.enabled = false;
+        // globe.addLayer(wmsLayer, {
+        //     category: "settings",
+        //     enabled: "true"
+        // });
+        console.log("char");
         var slider3 = document.getElementById("slider3");
         slider3.onclick = function(){
             wmsLayer.enabled = !wmsLayer.enabled
         }
-        // var LayerToggle3 = function () {
+        // if (wmsLayer.enabled === true) {
+        //     slider3.onclick = function () {
+        //         wmsLayer.enabled = false
         //
-        //     // if (wmsLayer.enabled === true) {
-        //     //     slider3.onclick = function () {
-        //     //         wmsLayer.enabled = false
-        //     //
-        //     //     }
-        //     // }
-        //     // if (wmsLayer.enabled === false) {
-        //     //     slider3.onclick = function () {
-        //     //         wmsLayer.enabled = true
-        //     //     }
-        //     // }
-        // };
-        // addEventListener("click", LayerToggle3);
+        //     }
+        // }
+        // if (wmsLayer.enabled === false) {
+        //     slider3.onclick = function () {
+        //         wmsLayer.enabled = true
+        //     }
+        // }
+
+
+        // $(document).ready(function () {
+        //     $("#slider4").change(function () {
+        //         wmsLayer.enabled = !wmsLayer.enabled;
+        //         console.log("Layer toggled");
+        //     });
+        // });
     };
 
 
@@ -586,6 +592,7 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
     // var ajax = new XMLHttpRequest();
     // console.log(ajax);
     $.get(serviceAddress).done(createLayer).fail(logError);
+
     // $.ajax({
     //     type: "GET",
     //     crossOrigin: true,
@@ -596,6 +603,38 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
     // }).done(createLayer).fail(logError);
 
 
+
+    // // Web Map Service information from NASA's Near Earth Observations WMS
+    // var serviceAddress2 = "https://neo.sci.gsfc.nasa.gov/wms/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0";
+    // // Named layer displaying Average Temperature data
+    // var layerName2 = "MOD_LSTD_CLIM_M";
+    //
+    // // Called asynchronously to parse and create the WMS layer
+    // var createLayer2 = function (xmlDom) {
+    //     // Create a WmsCapabilities object from the XML DOM
+    //     var wms = new WorldWind.WmsCapabilities(xmlDom);
+    //     // Retrieve a WmsLayerCapabilities object by the desired layer name
+    //     var wmsLayerCapabilities = wms.getNamedLayer(layerName2);
+    //     // Form a configuration object from the WmsLayerCapability object
+    //     var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities);
+    //     // Modify the configuration objects title property to a more user friendly title
+    //     wmsConfig.title = "Average Surface Temp";
+    //     // Create the WMS Layer from the configuration object
+    //     var wmsLayer = new WorldWind.WmsLayer(wmsConfig);
+    //
+    //     // Add the layers to WorldWind and update the layer manager
+    //     globe.addLayer(wmsLayer, {
+    //         category: "settings",
+    //         enabled: "true"
+    //     });
+    // };
+    //
+    // // Called if an error occurs during WMS Capabilities document retrieval
+    // var logError2 = function (jqXhr, text, exception) {
+    //     console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
+    // };
+    //
+    // $.get(serviceAddress2).done(createLayer2).fail(logError2());
 
 
     var locations = [];
@@ -617,6 +656,9 @@ requirejs(["./src/WorldWind"],  function(WorldWind) {
     slider4.onclick = function(){
         heatMap.enabled = !heatMap.enabled
     };
+
+
+
 
     // Activate the Knockout bindings between our view models and the html
     let layersViewModel = new LayersViewModel(globe);
